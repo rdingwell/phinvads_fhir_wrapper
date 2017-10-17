@@ -10,7 +10,9 @@ if proxy
   port = uri.port || 80
   JAVA_SYSTEM.setProperty("http.proxyHost",host)
   JAVA_SYSTEM.setProperty("http.proxyPort",port.to_s)
+  JAVA_SYSTEM.setProperty("https.proxyHost",host)
+  JAVA_SYSTEM.setProperty("https.proxyPort",port.to_s)
 end
 
 factory = com.caucho.hessian.client.HessianProxyFactory.new
-VADS_SERVICE = factory.create(Java::GovCdcVocabService::VocabService.java_class,"http://phinvads.cdc.gov/vocabService/v2")
+VADS_SERVICE = factory.create(Java::GovCdcVocabService::VocabService.java_class,"https://phinvads.cdc.gov/vocabService/v2")

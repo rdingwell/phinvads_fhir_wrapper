@@ -1,25 +1,26 @@
-
-json.(@valueset, :id,:oid,:name,:code,:status,
-                   :statusDate,:definitionText,:scopeNoteText,
-                   :assigningAuthorityId,:valueSetCreatedDate,
-                   :valueSetLastRevisionDate)
-
-json.version(@version,:id,:valueSetOid,:versionNumber,:description,:status,:statusDate,:assigningAuthorityText,:assigningAuthorityReleaseDate,:noteText,:effectiveDate,:expiryDate
-)
-
+json.resourceType "ValueSet"
+json.id @valueset.id
+json.url	json.url valueset_url(@valueset.oid.strip)
+json.identifier	do
+  json.system "urn:ietf:rfc:3986"
+  json.value 'urn:oid:' + @valueset.oid
+end
+json.version	@version.versionNumber
+json.name	@valueset.name
+json.status	@valueset.status
+json.date	@valueset.valueSetLastRevisionDate
+json.publisher "PHIN VADS"
+json.description	@valueset.definitionText
 json.expansion do
   json.identifier nil
-  json.timestamp = nil
+  json.timestamp  nil
+  json.total @concepts[:total]
+  json.offset @concepts[:offset]
   json.contains do
-    json.array! @concepts do |code|
+    json.array! @concepts[:concepts] do |code|
       json.system code.codeSystemOid
       json.code code.conceptCode
       json.display code.codeSystemConceptName
-      json.description code.definitionText
-      json.valueSetVersionId code.valueSetVersionId
-      json.vads(code, :id,:codeSystemOid ,:valueSetVersionId,:conceptCode,:scopeNoteText,:status,
-      :statusDate,:cdcPreferredDesignation,:preferredAlternateCode,:definitionText,:codeSystemConceptName)
-
     end
   end
 end
