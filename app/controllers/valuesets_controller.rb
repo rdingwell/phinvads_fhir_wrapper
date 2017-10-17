@@ -1,4 +1,8 @@
 class ValuesetsController < ApplicationController
+
+  caches_action :index, expires_in: 1.day
+  caches_action :show, cache_path: Proc.new {request.url}
+
   def index
     valuesets = VADS_SERVICE.getAllValueSets.getValueSets
     temp = {}
@@ -6,11 +10,6 @@ class ValuesetsController < ApplicationController
       temp[vs.oid] = { valueset: vs, versions: [] }
     end
     @valuesets = temp.values
-  end
-
-  def versions
-    @valueset = VADS_SERVICE.getValueSetByOid(params[:id]).getValueSet
-    @versions = VADS_SERVICE.getValueSetVersionsByValueSetOid(@valueset.oid).getValueSetVersions
   end
 
   def show

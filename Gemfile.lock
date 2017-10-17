@@ -18,6 +18,8 @@ GEM
       rack-test (~> 0.6.3)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
+    actionpack-action_caching (1.2.0)
+      actionpack (>= 4.0.0, < 6)
     actionview (5.0.1)
       activesupport (= 5.0.1)
       builder (~> 3.1)
@@ -43,17 +45,7 @@ GEM
     byebug (9.0.6)
     concurrent-ruby (1.0.4)
     concurrent-ruby (1.0.4-java)
-    elasticsearch (5.0.3)
-      elasticsearch-api (= 5.0.3)
-      elasticsearch-transport (= 5.0.3)
-    elasticsearch-api (5.0.3)
-      multi_json
-    elasticsearch-transport (5.0.3)
-      faraday
-      multi_json
     erubis (2.7.0)
-    faraday (0.11.0)
-      multipart-post (>= 1.2, < 3)
     ffi (1.9.14)
     ffi (1.9.14-java)
     globalid (0.3.7)
@@ -76,7 +68,6 @@ GEM
     mini_portile2 (2.1.0)
     minitest (5.10.1)
     multi_json (1.12.1)
-    multipart-post (2.0.0)
     nio4r (1.2.1)
     nio4r (1.2.1-java)
     nokogiri (1.7.0.1)
@@ -144,8 +135,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  actionpack-action_caching
   byebug
-  elasticsearch
   jbuilder (~> 2.5)
   listen (~> 3.0.5)
   puma (~> 3.0)
@@ -155,4 +146,4 @@ DEPENDENCIES
   tzinfo-data
 
 BUNDLED WITH
-   1.13.7
+   1.15.4
