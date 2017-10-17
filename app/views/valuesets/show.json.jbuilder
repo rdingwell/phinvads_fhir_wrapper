@@ -18,7 +18,7 @@ json.expansion do
   json.offset @concepts[:offset]
   json.contains do
     json.array! @concepts[:concepts] do |code|
-      json.system code.codeSystemOid
+      json.system "urn:oid:#{code.codeSystemOid}"
       json.code code.conceptCode
       json.display code.codeSystemConceptName
     end

@@ -30,7 +30,16 @@ class ValuesetsController < ApplicationController
     end
     page =  (offset/limit) + 1
     @concepts = retrieve_concepts(@version, page, limit).merge(offset: offset)
+  end
 
+  def validate
+    res = /urn:oid:(.*)/.match(params[:system])
+    if res && res[1]
+      validateDTO = VADS_SERVICE.validateConceptValueSetMembership(res[1], params[:code],params[:id],params[:version])
+      @results = {result: validateDTO.valid,   message:validateDTO.errorText }
+    else
+      raise "Invalid code system uri #{params[:system]}"
+    end
   end
 
   private
