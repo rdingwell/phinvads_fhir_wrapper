@@ -1,20 +1,16 @@
 class CodeSystemsController < ApplicationController
+  caches_action :index, expires_in: 1.day
+  caches_action :show, cache_path: Proc.new {request.url}
 
+  # GET /code_systems
   def index
     @code_systems = VADS_SERVICE.getAllCodeSystems.getCodeSystems
   end
 
+  # GET /code_systems/:id
   def show
     @code_system = VADS_SERVICE.getCodeSystemByOid(params[:id]).getCodeSystem
-    if params[:query]
-        start = Time.now.to_i
-        res = VADS_SERVICE.findCodeSystemConcepts(search, 1,100)
-        @concepts = res.getCodeSystemConcepts
-        logger.debug "time to search #{Time.now.to_i - start}"
-        logger.debug  "total actual results #{res.totalResults}"
-    else
-      @concepts = retrieve_concepts(params[:id]) #VADS_SERVICE.getCodeSystemConceptsByCodeSystemOid(params[:id],1,1000).getCodeSystemConcepts
-    end
+    @concepts = retrieve_concepts(params[:id])
   end
 
   private
@@ -39,8 +35,8 @@ class CodeSystemsController < ApplicationController
     loop do
       dto = VADS_SERVICE.getCodeSystemConceptsByCodeSystemOid(id, page, limit)
       concepts.concat dto.getCodeSystemConcepts
+      logger.debug  "Concepts length #{concepts.length}  Total Results #{dto.getTotalResults()} Page #{page}"
       page = page + 1
-      puts "Concepts length #{concepts.length}  Total Results #{dto.getTotalResults()} Page #{page}"
       break if concepts.length >= dto.getTotalResults()
      end
     concepts
